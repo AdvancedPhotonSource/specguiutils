@@ -2,9 +2,6 @@
  Copyright (c) 2017, UChicago Argonne, LLC
  See LICENSE file.
 '''
-import sys
-from spec2nexus.spec import SpecDataFile
-
 import PyQt4.QtGui as qtGui
 import PyQt4.QtCore as qtCore
 
@@ -60,37 +57,7 @@ class ScanBrowser(qtGui.QDialog):
             
     @qtCore.pyqtSlot(int, int, int, int)
     def scanSelectionChanged(self, currentRow, currentColumn, previousRow, previousColumn):
-        print("Scan Selection Changed")
+        #print("Scan Selection Changed")
         self.scanSelected.emit(str(self.scanList.item(currentRow,0).text()))
             
-class TestWindow(qtGui.QMainWindow):
-    def __init__(self, parent=None):
-        super(TestWindow, self).__init__(parent)
-        self.scanBrowser = ScanBrowser()
-        self.setCentralWidget(self.scanBrowser)
-        menuBar = self.menuBar()
-        menuBar.setNativeMenuBar(False)
-        self.scanBrowser.scanSelected[str].connect(self.handleScanChanged)
-    
-        fileMenu = menuBar.addMenu('File')
-        openAction = qtGui.QAction('Open', self)
-        openAction.triggered.connect(self.openFile)
-        
-        fileMenu.addAction(openAction)
-        self.show()
-        
-    def openFile(self):
-        fileName = qtGui.QFileDialog.getOpenFileName(None, "Open Spec File")
-        specFile = SpecDataFile(fileName)
-        self.scanBrowser.loadScans(specFile.scans)
-        
-    @qtCore.pyqtSlot(str)
-    def handleScanChanged(self, newScan):
-        print("Test Code intecepted scan change %s" % newScan)
-        
-if __name__ == '__main__':
-    app = qtGui.QApplication(sys.argv)
-    mainForm = TestWindow()
-    app.exec_()
-    
         

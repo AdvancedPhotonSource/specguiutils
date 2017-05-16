@@ -4,7 +4,6 @@
 '''
 from setuptools import setup
 
-
 setup(name='specguiutils',
       version='0.0.1',
       description='Library to provide PyQt4 widgets to display spec file information read using ' +
@@ -14,7 +13,9 @@ setup(name='specguiutils',
       url = '',
       packages = ['specguiutils',
                   'specguiutils.scanbrowser',
-                  'specguiutils.counterselector'] ,
+                  'specguiutils.counterselector',
+                  'specguiutils.examples',
+                  'specguiutils.examples.scanbrowserexample'] ,
       install_requires = ['spec2nexus', ],
       license = 'See LICENSE File',
       platforms = 'any',
