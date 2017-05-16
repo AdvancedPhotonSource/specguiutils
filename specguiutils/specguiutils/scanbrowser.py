@@ -58,6 +58,6 @@ class ScanBrowser(qtGui.QDialog):
     @qtCore.pyqtSlot(int, int, int, int)
     def scanSelectionChanged(self, currentRow, currentColumn, previousRow, previousColumn):
         #print("Scan Selection Changed")
-        self.scanSelected.emit(str(self.scanList.item(currentRow,0).text()))
+                    self.scanSelected.emit(str(self.scanList.item(currentRow,0).text()))
             
         

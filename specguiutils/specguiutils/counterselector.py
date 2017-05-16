@@ -5,7 +5,8 @@
 import os
 import PyQt4.QtGui as qtGui
 import PyQt4.QtCore as qtCore
-from copy_reg import constructor
+
+COUNTER_LABEL_COLUMN = 0
 
 class CounterSelector(qtGui.QDialog):
     '''
@@ -21,13 +22,35 @@ class CounterSelector(qtGui.QDialog):
         layout = qtGui.QHBoxLayout()
         self.counterList = qtGui.QTableWidget()
         self.counterList.setRowCount(1)
-        numCounterOpts = len(self.monitorOpts)
-        if numCounterOpts == 0:
+        if counterOpts is not None:
+            numCounterOpts = len(self.counterOpts)
+        else:
+            numCounterOpts = 0
+        if numCounterOpts != 0:
             self.counterList.setColumnCount(numCounterOpts+1)
-            headerLabels = ["Counter" ,].append(self.counterOpts)
-            self.counterlist.setHorzontalHeaderLabels(headerLabels)
+            headerLabels = ["Counter" ,]
+            headerLabels.extend(self.counterOpts)
+            print headerLabels
+            self.counterList.setHorizontalHeaderLabels(headerLabels)
         else:
             self.counterList.setColumnCount(1)
-            self.counterList.setHorizonatlHeaderLables(["Counter",])
-            
-            
+            self.counterList.setHorizontalHeaderLabels(["Counter",])
+        layout.addWidget(self.counterList)
+        self.setLayout(layout) 
+        self.show()
+        
+    def changeScanCounters(self, scan):
+        print("changeScanCounters %s" % scan)
+        for row in range(self.counterList.rowCount()):
+            self.counterList.removeRow(row)
+        dataKeys = scan.L
+        self.counterList.setRowCount(len(dataKeys))
+        for row in range(len( dataKeys)):
+            counterLabel = qtGui.QTableWidgetItem(dataKeys[row])
+            self.counterList.setItem(row, COUNTER_LABEL_COLUMN, counterLabel)
+            for col in range(1, len(self.counterOpts) +1):
+                booleanLabel = qtGui.QTableWidgetItem(1)
+                booleanLabel.data(qtCore.Qt.CheckStateRole)
+                booleanLabel.data.setCheckedState(qtCore.Qt.Unchecked)
+                self.counterList.setItem(row, col, booleanLabel)
+        
