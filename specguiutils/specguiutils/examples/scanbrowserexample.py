@@ -8,7 +8,9 @@ import PyQt4.QtCore as qtCore
 from specguiutils.scanbrowser import ScanBrowser
 from spec2nexus.spec import SpecDataFile
 from specguiutils.examples.BaseExample import BaseExample
+from specguiutils.scantypeselector import ScanTypeSelector
 
+APP_NAME = "ScanBrowserExample"
 
 class ScanBrowserExample(BaseExample):
     def __init__(self, parent=None):
@@ -17,8 +19,8 @@ class ScanBrowserExample(BaseExample):
         self.scanBrowser.scanSelected[str].connect(self.handleScanChanged)
         self.setCentralWidget(self.scanBrowser)
         self.connectOpenFileAction(self.openFile)
+        self.setWindowTitle(APP_NAME)
         self.show()
-        
         
     @qtCore.pyqtSlot(str)
     def handleScanChanged(self, newScan):
@@ -28,6 +30,7 @@ class ScanBrowserExample(BaseExample):
     def openFile(self):
         fileName = qtGui.QFileDialog.getOpenFileName(None, "Open Spec File")
         self.specFile = SpecDataFile(fileName)
+        self.setWindowTitle(APP_NAME + ' - ' + str(fileName))
         self.scanBrowser.loadScans(self.specFile.scans)
         
 if __name__ == '__main__':
