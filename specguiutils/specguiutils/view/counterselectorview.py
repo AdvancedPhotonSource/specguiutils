@@ -49,7 +49,7 @@ class CounterSelectorView(qtGui.QTableView):
             
     def getSelectedCounters(self):
         dataOut = []
-        print ("counterSelectorView getSelectedCounter %s" % dataOut )
+        logger.debug (" %s" % dataOut )
         for bGroup in self.columnGroups.keys():
 #             position = qtCore.QModelIndex()
 #             print " row, col %d, %d" % (position.row(), position.column())
@@ -58,7 +58,7 @@ class CounterSelectorView(qtGui.QTableView):
                 dataOut.append(-1*widgetId -2)
             else:
                 dataOut.append(-1)
-        print ("counterSelectorView getSelectedCounter %s" % dataOut )
+        logger.debug ("Leaving %s" % dataOut )
         return dataOut
                 
             
