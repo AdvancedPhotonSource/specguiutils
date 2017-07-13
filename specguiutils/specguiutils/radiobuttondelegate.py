@@ -19,6 +19,7 @@ class RadioButtonDelegate(qtGui.QStyledItemDelegate):
         
 #        radio.setChecked[bool].connect(self.setChecked)
         self.editor = radio
+        self.editor.setAutoFillBackground(True)
         return radio
     
     def setEditorData(self, editor, value):
