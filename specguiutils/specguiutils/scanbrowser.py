@@ -19,7 +19,7 @@ class ScanBrowser(qtGui.QDialog):
     '''
     '''
     # Define some signals that this class will provide to users
-    scanSelected = qtCore.pyqtSignal(str, name="scanSelected")
+    scanSelected = qtCore.pyqtSignal(list, name="scanSelected")
     scanLoaded = qtCore.pyqtSignal(bool, name="scanLoaded")
               
     def __init__(self, parent=None):
@@ -29,6 +29,12 @@ class ScanBrowser(qtGui.QDialog):
         super(ScanBrowser, self).__init__(parent)
         layout = qtGui.QHBoxLayout()
         self.scanList = qtGui.QTableWidget()
+        #
+        font = qtGui.QFont()
+        font.setFamily("Helvetica")
+        font.setPointSize(10)
+        self.scanList.setFont(font)
+        
         self.scanList.setRowCount(1)
         self.scanList.setColumnCount(3)
         self.scanList.setColumnWidth(SCAN_COL, SCAN_COL_WIDTH)
@@ -36,13 +42,15 @@ class ScanBrowser(qtGui.QDialog):
         self.scanList.setColumnWidth(NUM_PTS_COL, NUM_PTS_COL_WIDTH)
         self.scanList.setHorizontalHeaderLabels(['S#', 'Command', 'Points'])
         self.scanList.setSelectionBehavior(qtGui.QAbstractItemView.SelectRows)
-        self.setMinimumWidth(620)
+        self.setMinimumWidth(400)
+        self.setMaximumWidth(600)
         layout.addWidget(self.scanList)
         self.setLayout(layout)
         self.show()
         
-        self.scanList.currentCellChanged[int, int, int, int].connect(self.scanSelectionChanged)
-        
+#        self.scanList.currentCellChanged[int, int, int, int].connect(self.scanSelectionChanged)
+        self.scanList.itemSelectionChanged.connect(self.scanSelectionChanged)
+
     def loadScans(self, scans, newFile=True):
         #self.scans = scans
         self.scanList.setRowCount(len(scans.keys()) )
@@ -79,9 +87,19 @@ class ScanBrowser(qtGui.QDialog):
     def setCurrentScan(self, row):
         self.scanList.setCurrentCell(row, 0)
 
-    @qtCore.pyqtSlot(int, int, int, int)
-    def scanSelectionChanged(self, currentRow, currentColumn, previousRow, previousColumn):
-        #print("Scan Selection Changed")
-                    self.scanSelected.emit(str(self.scanList.item(currentRow,0).text()))
-            
-        
+#     @qtCore.pyqtSlot(int, int, int, int)
+#     def scanSelectionChanged(self, currentRow, currentColumn, previousRow, previousColumn):
+#         #print("Scan Selection Changed")
+#                     self.scanSelected.emit(str(self.scanList.item(currentRow,0).text()))
+#             
+    @qtCore.pyqtSlot()
+    def scanSelectionChanged(self):
+        logger.debug("Entered")
+        selectedItems = self.scanList.selectedIndexes()
+        selectedScans = []
+        for item in selectedItems:
+            if item.column() == 0:
+                scan = str(self.scanList.item(item.row(),0).text())
+                selectedScans.append(scan)
+        logger.debug("Selected scans %s" % selectedScans)
+        self.scanSelected[list].emit(selectedScans)
