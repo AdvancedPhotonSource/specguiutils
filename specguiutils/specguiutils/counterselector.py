@@ -31,6 +31,11 @@ class CounterSelector(qtGui.QDialog):
         self.counterModel = CounterSelectorTableModel(parent=self, counterOpts=counterOpts)
         self.counterView = CounterSelectorView(parent, tableModel=self.counterModel)
         self.counterView.setModel(self.counterModel)
+        font = qtGui.QFont()
+        font.setFamily("Helvetica")
+        font.setPointSize(10)
+        self.counterView.setFont(font)
+        
         self.counterModel.headerDataChanged.connect(self.counterView.headerChanged)
         layout.addWidget(self.counterView)
         self.setLayout(layout) 
@@ -82,7 +87,7 @@ class CounterSelector(qtGui.QDialog):
             for column in range(len(selections)):
                 if not (selections[column] == ''):
                     nameIndex = self.counterModel.index( row,0)
-                    logger.debug("nameIndex: %s" % nameIndex)
+                    #logger.debug("nameIndex: %s" % nameIndex)
                     nameWidget = self.counterModel.data(nameIndex)
                     if str(nameWidget) == selections[column]:
                         self.counterModel.setItem(row, column+1, True)
