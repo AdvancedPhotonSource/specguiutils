@@ -16,15 +16,15 @@ class ScanBrowserExample(BaseExample):
     def __init__(self, parent=None):
         super(ScanBrowserExample, self).__init__(parent)
         self.scanBrowser = ScanBrowser()
-        self.scanBrowser.scanSelected[str].connect(self.handleScanChanged)
+        self.scanBrowser.scanSelected[list].connect(self.handleScanChanged)
         self.setCentralWidget(self.scanBrowser)
         self.connectOpenFileAction(self.openFile)
         self.setWindowTitle(APP_NAME)
         self.show()
         
-    @qtCore.pyqtSlot(str)
-    def handleScanChanged(self, newScan):
-        print("Test Code intecepted scan change %s" % newScan)
+    #@qtCore.pyqtSlot(str)
+    def handleScanChanged(self, scanList):
+        print("Test Code intecepted scan change %s" % scanList)
 
     @qtCore.pyqtSlot()
     def openFile(self):
