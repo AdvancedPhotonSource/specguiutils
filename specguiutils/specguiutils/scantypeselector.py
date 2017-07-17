@@ -22,7 +22,7 @@ class ScanTypeSelector(qtGui.QDialog):
 
         layout = qtGui.QHBoxLayout()
         label =qtGui.QLabel("Scan Type")
-        self.scanTypes = SCAN_TYPES
+        self.scanTypes = list(SCAN_TYPES)
         self.scanTypeSelection = qtGui.QComboBox()
         self.scanTypeSelection.insertItems(0, self.scanTypes)
  
@@ -39,12 +39,13 @@ class ScanTypeSelector(qtGui.QDialog):
         self.scanTypeSelection.currentIndexChanged[int] \
             .disconnect(self.typeSelectionChanged)
         self.scanTypeSelection.clear()
-        logger.debug(SCAN_TYPES)
-        self.scanTypes = SCAN_TYPES.extend(scanTypes)
-        logger.debug(scanTypes)
-        logger.debug(self.scanTypes)
-        self.scanTypeSelection.insertItems(0, SCAN_TYPES)
-        self.scanTypeSelection.insertItems(1, scanTypes)
+        logger.debug("SCAN_TYPES %s" % SCAN_TYPES)
+        self.scanTypes = list(SCAN_TYPES)
+        self.scanTypes.extend(scanTypes)
+        logger.debug("scanTypes %s" % scanTypes)
+        logger.debug("self.scanTypes %s" % self.scanTypes)
+        self.scanTypeSelection.insertItems(0, self.scanTypes)
+        #self.scanTypeSelection.insertItems(1, scanTypes)
         #self.setCurrentType(0)
         self.scanTypeSelection.currentIndexChanged[int] \
             .connect(self.typeSelectionChanged)
