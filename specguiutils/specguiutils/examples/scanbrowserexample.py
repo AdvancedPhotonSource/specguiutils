@@ -3,12 +3,13 @@
  See LICENSE file.
 '''
 import sys
-import PyQt4.QtGui as qtGui
-import PyQt4.QtCore as qtCore
+
+import PyQt5.QtWidgets as qtWidgets
+import PyQt5.QtCore as qtCore
 from specguiutils.scanbrowser import ScanBrowser
 from spec2nexus.spec import SpecDataFile
 from specguiutils.examples.BaseExample import BaseExample
-from specguiutils.scantypeselector import ScanTypeSelector
+#from specguiutils.scantypeselector import ScanTypeSelector
 
 APP_NAME = "ScanBrowserExample"
 
@@ -28,13 +29,13 @@ class ScanBrowserExample(BaseExample):
 
     @qtCore.pyqtSlot()
     def openFile(self):
-        fileName = qtGui.QFileDialog.getOpenFileName(None, "Open Spec File")
+        fileName = qtWidgets.QFileDialog.getOpenFileName(None, "Open Spec File")[0]
         self.specFile = SpecDataFile(fileName)
         self.setWindowTitle(APP_NAME + ' - ' + str(fileName))
         self.scanBrowser.loadScans(self.specFile.scans)
         
 if __name__ == '__main__':
-    app = qtGui.QApplication(sys.argv)
+    app = qtWidgets.QApplication(sys.argv)
     mainForm = ScanBrowserExample()
     app.exec_()
     

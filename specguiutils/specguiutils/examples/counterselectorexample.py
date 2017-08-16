@@ -3,8 +3,9 @@
  See LICENSE file.
 '''
 
-import PyQt4.QtGui as qtGui
-import PyQt4.QtCore as qtCore
+import PyQt5.QtGui as qtGui
+import PyQt5.QtWidgets as qtWidgets
+import PyQt5.QtCore as qtCore
 from specguiutils.scanbrowser import ScanBrowser
 from specguiutils.counterselector import CounterSelector
 from specguiutils.examples.BaseExample import BaseExample
@@ -20,11 +21,11 @@ class CounterSelectorExample(BaseExample):
     
     def __init__(self, parent=None):
         super(CounterSelectorExample, self).__init__(parent)
-        mainWidget = qtGui.QWidget()
-        layout = qtGui.QVBoxLayout()
+        mainWidget = qtWidgets.QWidget()
+        layout = qtWidgets.QVBoxLayout()
         self.scanBrowser = ScanBrowser()
         self.counterSelector = CounterSelector(counterOpts=COUNTER_OPTS)
-        self.scanBrowser.scanSelected[str].connect(self.handleScanSelection)
+        self.scanBrowser.scanSelected[list].connect(self.handleScanSelection)
         self.counterSelector.counterOptChanged[str, int, bool].connect(self.handleCounterOptChanged)
         layout.addWidget(self.scanBrowser)
         layout.addWidget(self.counterSelector)
@@ -40,22 +41,22 @@ class CounterSelectorExample(BaseExample):
         #print ("handling a counter option changing for counter %s %s %s " % \
                 (counterName, COUNTER_OPTS[optIndex], value)
         
-    @qtCore.pyqtSlot(str)
+    @qtCore.pyqtSlot(list)
     def handleScanSelection(self, newScan):
-        #print ("handling selection of scan %s" %newScan)
-        self.counterSelector.counterModel.initializeDataRows(self.specFile.scans[str(newScan)].L)
+        print ("handling selection of scan %s" %newScan[0])
+        self.counterSelector.counterModel.initializeDataRows(self.specFile.scans[str(newScan[0])].L)
         self.counterSelector.counterModel.setCounterOptions(COUNTER_OPTS)
 #        self.counterSelector.changeScanCounters(self.specFile.scans[str(newScan)])
         
     @qtCore.pyqtSlot()
     def openFile(self):
-        fileName = qtGui.QFileDialog.getOpenFileName(None, "Open Spec File")
+        fileName = qtWidgets.QFileDialog.getOpenFileName(None, "Open Spec File")[0]
         self.specFile = SpecDataFile(fileName)
         self.setWindowTitle(APP_NAME + " - " + str(fileName))
         self.scanBrowser.loadScans(self.specFile.scans)
 
 if __name__ == '__main__':
-    app = qtGui.QApplication(sys.argv)
+    app = qtWidgets.QApplication(sys.argv)
     mainForm = CounterSelectorExample()
     app.exec_()
     

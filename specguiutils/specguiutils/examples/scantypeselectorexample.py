@@ -3,12 +3,13 @@
  See LICENSE file.
 '''
 import sys
-import PyQt4.QtGui as qtGui
-import PyQt4.QtCore as qtCore
+import PyQt5.QtWidgets as qtWidgets
+import PyQt5.QtCore as qtCore
 from spec2nexus.spec import SpecDataFile
 from specguiutils.examples.BaseExample import BaseExample
 from specguiutils.scantypeselector import ScanTypeSelector
 import logging
+import os
 logger = logging.getLogger(__name__)
 
 APP_NAME = "ScanTypeSelectorExample"
@@ -27,7 +28,8 @@ class ScanTypeSelectorExample(BaseExample):
         
     @qtCore.pyqtSlot()
     def openFile(self):
-        fileName = qtGui.QFileDialog.getOpenFileName(None, "Open Spec File")
+        fileName = str((qtWidgets.QFileDialog.getOpenFileName(None, "Open Spec File"))[0])
+        print(fileName)
         self.specFile = SpecDataFile(fileName)
         self.setWindowTitle(APP_NAME + ' - ' + str(fileName))
         self.typeSelector.loadScans(self.getScanTypes())
@@ -45,8 +47,8 @@ class ScanTypeSelectorExample(BaseExample):
           
          
 if __name__ == '__main__':
-    app = qtGui.QApplication(sys.argv)
-    print "mainApp"
+    app = qtWidgets.QApplication(sys.argv)
+    print ("mainApp")
     mainForm = ScanTypeSelectorExample()
     mainForm.show()
     app.exec_()

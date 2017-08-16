@@ -2,15 +2,16 @@
  Copyright (c) 2017, UChicago Argonne, LLC
  See LICENSE file.
 '''
-import PyQt4.QtGui as qtGui
-import PyQt4.QtCore as qtCore
+import PyQt5.QtGui as qtGui
+import PyQt5.QtWidgets as qtWidgets
+import PyQt5.QtCore as qtCore
 import logging
 logger = logging.getLogger(__name__)
 
 FILE_MENU_TEXT = 'File'
 OPEN_ACTION_TEXT = 'Open'
 
-class BaseExample(qtGui.QMainWindow):
+class BaseExample(qtWidgets.QMainWindow):
     
     def __init__(self, parent=None):
         super(BaseExample, self).__init__(parent)
@@ -19,7 +20,7 @@ class BaseExample(qtGui.QMainWindow):
         #menuBar.setNativeMenuBar(False)
     
         fileMenu = menuBar.addMenu(FILE_MENU_TEXT)
-        self.openAction = qtGui.QAction(OPEN_ACTION_TEXT, self)
+        self.openAction = qtWidgets.QAction(OPEN_ACTION_TEXT, self)
         fileMenu.addAction(self.openAction)
         self.show()
         logger.debug("BaseExample.__init__")
