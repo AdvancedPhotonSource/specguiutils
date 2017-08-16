@@ -2,14 +2,14 @@
  Copyright (c) 2017, UChicago Argonne, LLC
  See LICENSE file.
 '''
-import PyQt4.QtGui as qtGui
-import PyQt4.QtCore as qtCore
+import PyQt5.QtWidgets as qtWidgets
+import PyQt5.QtCore as qtCore
 import logging
 logger = logging.getLogger(__name__)
 
 SCAN_TYPES = ['All',]
 
-class ScanTypeSelector(qtGui.QDialog):
+class ScanTypeSelector(qtWidgets.QDialog):
     '''
     Provide a ComboBox to allow switching scan between scan types included 
     in the spec file.  An additional item 
@@ -20,10 +20,10 @@ class ScanTypeSelector(qtGui.QDialog):
         super(ScanTypeSelector, self).__init__(parent)
         logger.debug ("Enter")
 
-        layout = qtGui.QHBoxLayout()
-        label =qtGui.QLabel("Scan Type")
+        layout = qtWidgets.QHBoxLayout()
+        label =qtWidgets.QLabel("Scan Type")
         self.scanTypes = list(SCAN_TYPES)
-        self.scanTypeSelection = qtGui.QComboBox()
+        self.scanTypeSelection = qtWidgets.QComboBox()
         self.scanTypeSelection.insertItems(0, self.scanTypes)
  
         layout.addWidget(label)
@@ -71,5 +71,6 @@ class ScanTypeSelector(qtGui.QDialog):
     @qtCore.pyqtSlot(int)
     def typeSelectionChanged(self, newType):
 #        self.scanTypeSelection.setCurrentIndex(newType)
+        logger.debug("Enter")
         self.scanTypeChanged[int].emit(newType)
         

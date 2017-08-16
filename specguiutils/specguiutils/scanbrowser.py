@@ -2,8 +2,9 @@
  Copyright (c) 2017, UChicago Argonne, LLC
  See LICENSE file.
 '''
-import PyQt4.QtGui as qtGui
-import PyQt4.QtCore as qtCore
+import PyQt5.QtWidgets as qtWidgets
+import PyQt5.QtCore as qtCore
+import PyQt5.QtGui as qtGui
 import logging
 logger = logging.getLogger(__name__)
 
@@ -15,7 +16,7 @@ SCAN_COL = 0
 CMD_COL = 1
 NUM_PTS_COL = 2
 
-class ScanBrowser(qtGui.QDialog):
+class ScanBrowser(qtWidgets.QDialog):
     '''
     '''
     # Define some signals that this class will provide to users
@@ -27,8 +28,8 @@ class ScanBrowser(qtGui.QDialog):
         constructor
         '''
         super(ScanBrowser, self).__init__(parent)
-        layout = qtGui.QHBoxLayout()
-        self.scanList = qtGui.QTableWidget()
+        layout = qtWidgets.QHBoxLayout()
+        self.scanList = qtWidgets.QTableWidget()
         #
         font = qtGui.QFont()
         font.setFamily("Helvetica")
@@ -41,7 +42,7 @@ class ScanBrowser(qtGui.QDialog):
         self.scanList.setColumnWidth(CMD_COL, CMD_COL_WIDTH)
         self.scanList.setColumnWidth(NUM_PTS_COL, NUM_PTS_COL_WIDTH)
         self.scanList.setHorizontalHeaderLabels(['S#', 'Command', 'Points'])
-        self.scanList.setSelectionBehavior(qtGui.QAbstractItemView.SelectRows)
+        self.scanList.setSelectionBehavior(qtWidgets.QAbstractItemView.SelectRows)
         self.setMinimumWidth(400)
         self.setMaximumWidth(600)
         layout.addWidget(self.scanList)
@@ -55,22 +56,24 @@ class ScanBrowser(qtGui.QDialog):
         #self.scans = scans
         self.scanList.setRowCount(len(scans.keys()) )
         row = 0
-        scanKeys = scans.keys()
-        scanKeys.sort(key=int)
+        #scanKeys = scans.keys()
+        scanKeys = sorted(scans, key=int)
+        logger.debug("scanKeys %s" % str(scanKeys))
         for scan in scanKeys:
-            scanItem = qtGui.QTableWidgetItem(str(scans[scan].scanNum))
+            scanItem = qtWidgets.QTableWidgetItem(str(scans[scan].scanNum))
             self.scanList.setItem(row, SCAN_COL, scanItem)
-            cmdItem = qtGui.QTableWidgetItem(scans[scan].scanCmd)
+            cmdItem = qtWidgets.QTableWidgetItem(scans[scan].scanCmd)
             self.scanList.setItem(row, CMD_COL, cmdItem)
-            nPointsItem = qtGui.QTableWidgetItem(str(len(scans[scan].data_lines)))
+            nPointsItem = qtWidgets.QTableWidgetItem(str(len(scans[scan].data_lines)))
             self.scanList.setItem(row, NUM_PTS_COL, nPointsItem)
             row += 1
         self.scanLoaded.emit(newFile)
             
     def filterByScanTypes(self, scans, scanTypes):
         filteredScans = {}
-        scanKeys = scans.keys()
-        scanKeys.sort(key=int)
+#         scanKeys = scans.keys()
+#         scanKeys.sort(key=int)
+        scanKeys = sorted(scans, key=int)
         for scan in scanKeys:
             if len(scanTypes) > 0:
                 thisType = scans[scan].scanCmd.split()[0]

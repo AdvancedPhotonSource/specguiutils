@@ -3,9 +3,10 @@
  See LICENSE file.
 '''
 import os
-import PyQt4.QtGui as qtGui
-import PyQt4.QtCore as qtCore
-from PyQt4.Qt import QButtonGroup
+import PyQt5.QtGui as qtGui
+import PyQt5.QtWidgets as qtWidgets
+import PyQt5.QtCore as qtCore
+from PyQt5.QtWidgets import QButtonGroup
 from specguiutils.model.counterselectortablemodel import CounterSelectorTableModel
 from specguiutils.radiobuttondelegate import RadioButtonDelegate
 from specguiutils.view.counterselectorview import CounterSelectorView
@@ -15,7 +16,7 @@ logger = logging.getLogger(__name__)
 COUNTER_LABEL_COLUMN = 0
 COUNTER_HEADER_INIT = ['Counter',]
 
-class CounterSelector(qtGui.QDialog):
+class CounterSelector(qtWidgets.QDialog):
     '''
     GUI to display the monitors for a selected scan
     '''
@@ -27,7 +28,7 @@ class CounterSelector(qtGui.QDialog):
         constructor
         '''
         super(CounterSelector, self).__init__(parent)
-        layout = qtGui.QHBoxLayout()
+        layout = qtWidgets.QHBoxLayout()
         self.counterModel = CounterSelectorTableModel(parent=self, counterOpts=counterOpts)
         self.counterView = CounterSelectorView(parent, tableModel=self.counterModel)
         self.counterView.setModel(self.counterModel)
@@ -43,7 +44,7 @@ class CounterSelector(qtGui.QDialog):
 
     
 
-    @qtCore.pyqtSlot(qtGui.QTableWidgetItem)
+    @qtCore.pyqtSlot(qtWidgets.QTableWidgetItem)
     def flagChangingOpts(self, item):
         logger.debug( "Entering flagChangingOpts")
         row = item.row()

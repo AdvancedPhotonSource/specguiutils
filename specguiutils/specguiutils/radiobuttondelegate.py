@@ -3,8 +3,9 @@
  See LICENSE file.
 '''
 
-import PyQt4.QtGui as qtGui
-import PyQt4.QtCore as qtCore
+import PyQt5.QtGui as qtGui
+import PyQt5.QtWidgets as qtGui
+import PyQt5.QtCore as qtCore
 import logging
 logger = logging.getLogger(__name__)
 
@@ -23,8 +24,9 @@ class RadioButtonDelegate(qtGui.QStyledItemDelegate):
         return radio
     
     def setEditorData(self, editor, value):
-#        print("settingEditorData %s" % value)
-        editor.setChecked(value.data().toBool())
+#         logger.debug("settingEditorData %s" % value)
+#         logger.debug("settingEditorData %s %s " % (type(value.data()), dir(value.data())))
+        editor.setChecked((value.data()))
         
     @qtCore.pyqtSlot(bool)
     def setChecked(self, checked):

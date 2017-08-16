@@ -2,14 +2,15 @@
  Copyright (c) 2017, UChicago Argonne, LLC
  See LICENSE file.
 '''
-import PyQt4.QtGui as qtGui
-import PyQt4.QtCore as qtCore
+import PyQt5.QtGui as qtGui
+import PyQt5.QtWidgets as qtWidgets
+import PyQt5.QtCore as qtCore
 from specguiutils.radiobuttondelegate import RadioButtonDelegate
 import logging
 logger = logging.getLogger(__name__)
 
 
-class CounterSelectorView(qtGui.QTableView):
+class CounterSelectorView(qtWidgets.QTableView):
     
     counterDataChanged = qtCore.pyqtSignal(list, name="signalChanged")
     
@@ -26,7 +27,7 @@ class CounterSelectorView(qtGui.QTableView):
         delegate = RadioButtonDelegate(self.parent())
         self.columnGroups.clear()
         for col in range(1, last):
-            self.columnGroups[col] = qtGui.QButtonGroup(self.parent())
+            self.columnGroups[col] = qtWidgets.QButtonGroup(self.parent())
         for col in range (1,last):
             
             numRows = self.model().rowCount()
