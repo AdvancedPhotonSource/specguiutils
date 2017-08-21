@@ -28,7 +28,8 @@ class Test(unittest.TestCase):
 
 
     def testLoadScans(self):
-        specFile = os.path.join(self.dataPath, "Brian-Nick/Fluorescence/lineup")
+        #specFile = os.path.join(self.dataPath, "Brian-Nick/Fluorescence/lineup")
+        specFile = "/home/epics/HAMMONDS/RSM_DATA/DanielHaskel/Brian-Nick/Fluorescence/lineup"
         print ("SpecDataFile %s" % specFile)
         specData = SpecDataFile(specFile)
         spy = QSignalSpy(self.scanBrowser.scanLoaded)
