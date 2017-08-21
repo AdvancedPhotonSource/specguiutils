@@ -21,6 +21,7 @@ class Test(unittest.TestCase):
     def setUp(self):
         self.scanBrowser = ScanBrowser()
         self.dataPath = os.environ.get('DATAPATH')
+        print ("self.dataPath %s" % self.dataPath)
         
     def tearDown(self):
         pass
