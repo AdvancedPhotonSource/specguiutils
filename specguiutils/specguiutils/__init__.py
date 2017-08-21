@@ -8,16 +8,16 @@ LOGGER_NAME="specguiutils"
 LOGGER_DEFAULT = {
     'version' : 1,
     'handlers' : {'consoleHandler' : {'class' : 'logging.StreamHandler',
-                               'level' : 'DEBUG',
+                               'level' : 'INFO',
                                'formatter' : 'consoleFormat',
                                'stream' : 'ext://sys.stdout'} ,
                   },
     'formatters' : {'consoleFormat' : {'format' : '%(asctime)-15s - %(name)s - %(funcName)s- %(levelname)s - %(message)s'},
                     },
-    'loggers' : {'root' :{'level' : 'DEBUG',
+    'loggers' : {'root' :{'level' : 'INFO',
                         'handlers' : ['consoleHandler',],
                       },
-               'specguiutils' : {'level' : 'DEBUG',
+               'specguiutils' : {'level' : 'INFO',
                             'handlers' : ['consoleHandler',],
                             'qualname' : 'specguiutils'
                             }
@@ -26,13 +26,16 @@ LOGGER_DEFAULT = {
 
 userDir = os.path.expanduser("~")
 logConfigFile = os.path.join(userDir, LOGGER_NAME + 'Log.config')
-print ("logConfigFile " + logConfigFile )
-try:
-    logging.config.fileConfig(logConfigFile)
-except (NoSectionError,TypeError):
+if os.path.exists(logConfigFile):
+    print ("logConfigFile " + logConfigFile )
+    try:
+        logging.config.fileConfig(logConfigFile, )
+    except (NoSectionError,TypeError):
+        print ("In Exception to load dictConfig")
+        logging.config.dictConfig(LOGGER_DEFAULT)
+    except KeyError as ex:
+        print ("logfile %s was missing or had errant sections %s" %(logConfigFile, ex.args))
+else:
     logging.config.dictConfig(LOGGER_DEFAULT)
-# except TypeError as ex:
-#     print("Trouble reading log file %s %s" % (logConfigFile, str(ex)))
-#     #traceback.print_stack()
-    
+        
 logger = logging.getLogger(LOGGER_NAME)
