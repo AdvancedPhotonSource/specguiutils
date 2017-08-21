@@ -15,7 +15,7 @@ app =  QApplication(sys.argv)
 COUNTER_OPTS_1 = ["X", "Y", "Z"]
 COUNTER_NAMES_1 = ["A", "B", "C"]
 
-class Test(unittest.TestCase):
+class TestScanBrowserTest(unittest.TestCase):
 
 
     def setUp(self):
@@ -28,8 +28,8 @@ class Test(unittest.TestCase):
 
 
     def testLoadScans(self):
-        #specFile = os.path.join(self.dataPath, "Brian-Nick/Fluorescence/lineup")
-        specFile = "/home/epics/HAMMONDS/RSM_DATA/DanielHaskel/Brian-Nick/Fluorescence/lineup"
+        specFile = os.path.join(self.dataPath, "Brian-Nick/Fluorescence/lineup")
+        #specFile = "/home/epics/HAMMONDS/RSM_DATA/DanielHaskel/Brian-Nick/Fluorescence/lineup"
         print ("SpecDataFile %s" % specFile)
         specData = SpecDataFile(specFile)
         spy = QSignalSpy(self.scanBrowser.scanLoaded)
