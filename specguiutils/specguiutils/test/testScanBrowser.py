@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import QApplication
 from specguiutils.scanbrowser import ScanBrowser
 from spec2nexus.spec import SpecDataFile
 import specguiutils
+import os
 app =  QApplication(sys.argv)
 
 COUNTER_OPTS_1 = ["X", "Y", "Z"]
@@ -19,14 +20,15 @@ class Test(unittest.TestCase):
 
     def setUp(self):
         self.scanBrowser = ScanBrowser()
+        self.dataPath = os.environ.get('DATAPATH')
         
-
     def tearDown(self):
         pass
 
 
     def testLoadScans(self):
-        specFile = "/Volumes/RSM_DATA/DanielHaskel/Brian-Nick/Fluorescence/lineup"
+        specFile = os.path.join(self.dataPath, "Brian-Nick/Fluorescence/lineup")
+        print ("SpecDataFile %s" % specFile)
         specData = SpecDataFile(specFile)
         spy = QSignalSpy(self.scanBrowser.scanLoaded)
         self.scanBrowser.loadScans(specData.scans, newFile=True)
