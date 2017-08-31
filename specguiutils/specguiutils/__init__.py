@@ -17,9 +17,9 @@ LOGGER_DEFAULT = {
     'loggers' : {'root' :{'level' : 'INFO',
                         'handlers' : ['consoleHandler',],
                       },
-               'specguiutils' : {'level' : 'INFO',
+               LOGGER_NAME : {'level' : 'INFO',
                             'handlers' : ['consoleHandler',],
-                            'qualname' : 'specguiutils'
+                            'qualname' : LOGGER_NAME
                             }
                },
    }
@@ -30,8 +30,8 @@ if os.path.exists(logConfigFile):
     print ("logConfigFile " + logConfigFile )
     try:
         logging.config.fileConfig(logConfigFile, )
-    except (NoSectionError,TypeError):
-        print ("In Exception to load dictConfig")
+    except (NoSectionError,TypeError) as ex:
+        print ("In Exception to load dictConfig package %s Because of exeption\n  %s" % (LOGGER_NAME, ex))
         logging.config.dictConfig(LOGGER_DEFAULT)
     except KeyError as ex:
         print ("logfile %s was missing or had errant sections %s" %(logConfigFile, ex.args))
