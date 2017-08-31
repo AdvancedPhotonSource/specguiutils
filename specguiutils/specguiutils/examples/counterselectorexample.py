@@ -3,7 +3,6 @@
  See LICENSE file.
 '''
 
-import PyQt5.QtGui as qtGui
 import PyQt5.QtWidgets as qtWidgets
 import PyQt5.QtCore as qtCore
 from specguiutils.scanbrowser import ScanBrowser
