@@ -2,7 +2,6 @@
  Copyright (c) 2017, UChicago Argonne, LLC
  See LICENSE file.
 '''
-import PyQt5.QtGui as qtGui
 import PyQt5.QtWidgets as qtWidgets
 import PyQt5.QtCore as qtCore
 from specguiutils.radiobuttondelegate import RadioButtonDelegate
@@ -18,9 +17,6 @@ class CounterSelectorView(qtWidgets.QTableView):
         super(CounterSelectorView,self).__init__(parent)
         self.setModel(tableModel)
         self.columnGroups = {}
-#        tableModel.headerDataChanged.connect(self.headerChanged)
-#         self.counterView.itemChanged[qtGui.QTableWidgetItem].connect(\
-#                                                      self.flagChangingOpts)
         
     def headerChanged(self, orientation, first, last):
         logger.debug( "Entering %s, %s, %s", orientation, first, last) 
