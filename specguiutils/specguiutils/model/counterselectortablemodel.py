@@ -40,25 +40,14 @@ class CounterSelectorTableModel(qtCore.QAbstractTableModel):
             
         dataKeys = scanLabels
         logger.debug ("dataKeys %s" % dataKeys)
-#         print "self.counterOpts %s " % self.counterOpts
         self.beginInsertRows(qtCore.QModelIndex(), 0, len(dataKeys)-1)
         
         self.counterData = [[0 for i in range(len(self.counterOpts))] for j in range(len(scanLabels))]
-#         print "counterData %s " % self.counterData
-        #print ("rowCount %d " % self.rowCount())
-#        buttonGroups = []
-
-#         for col in range(len(self.counterOpts)):
-#             buttonGroups.append(qtGui.QButtonGroup())
         for row in range(len( dataKeys)):
-            #print ("Setting key %s row %d" % (dataKeys[row], row))
             self.setRowName(row, dataKeys[row])
             for col in range(1, len(self.counterOpts)):
                 self.setItem(row, col, False)
-#        self.dataChanged.emit(self.index(0,0), self.index(len(dataKeys), len(self.counterOpts)))
         self.endInsertRows()
-#         success = self.insertRows(0, len(dataKeys))
-#         print ("Success adding rows %s" % success)
         
         
     def headerData(self, col, orientation, role):
