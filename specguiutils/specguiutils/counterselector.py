@@ -84,6 +84,9 @@ class CounterSelector(qtWidgets.QDialog):
     def setSelectedCounters(self, selections):
         logger.debug("Entering data size %d, %d" % (self.counterModel.rowCount(), self.counterModel.columnCount()))
         logger.debug("trying to set selections %s " % selections)
+        foundName = {}
+        for column in range(len(selections)):
+            foundName[column] = False
         for row in range(self.counterModel.rowCount()):
             for column in range(len(selections)):
                 if not (selections[column] == ''):
@@ -91,6 +94,11 @@ class CounterSelector(qtWidgets.QDialog):
                     #logger.debug("nameIndex: %s" % nameIndex)
                     nameWidget = self.counterModel.data(nameIndex)
                     if str(nameWidget) == selections[column]:
+                        foundName[column] = True
                         self.counterModel.setItem(row, column+1, True)
                 else:
                     self.counterModel.setItem(0, column+1, True)
+        for column in range(len(selections)):
+            if not foundName[column]:
+                self.counterModel.setItem(0, column+1, True)
+                
