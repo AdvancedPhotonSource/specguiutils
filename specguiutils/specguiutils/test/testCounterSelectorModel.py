@@ -4,7 +4,7 @@
 '''
 import sys
 import unittest 
-from PyQt5.QtTest import QSignalSpy, QTest
+from PyQt5.QtTest import QSignalSpy
 from PyQt5.QtWidgets import QApplication
 import PyQt5.QtCore as qtCore
 import specguiutils.model.counterselectortablemodel as tableModel
