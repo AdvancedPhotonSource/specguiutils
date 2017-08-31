@@ -3,20 +3,19 @@
  See LICENSE file.
 '''
 
-import PyQt5.QtGui as qtGui
-import PyQt5.QtWidgets as qtGui
+import PyQt5.QtWidgets as qtWidgets
 import PyQt5.QtCore as qtCore
 import logging
 logger = logging.getLogger(__name__)
 
-class RadioButtonDelegate(qtGui.QStyledItemDelegate):
+class RadioButtonDelegate(qtWidgets.QStyledItemDelegate):
     
     def __init__(self, parent=None):
         super(RadioButtonDelegate, self).__init__(parent)
         
 
     def createEditor(self, parent, option, index):
-        radio = qtGui.QRadioButton(parent)
+        radio = qtWidgets.QRadioButton(parent)
         
 #        radio.setChecked[bool].connect(self.setChecked)
         self.editor = radio

@@ -49,14 +49,12 @@ class ScanBrowser(qtWidgets.QDialog):
         self.setLayout(layout)
         self.show()
         
-#        self.scanList.currentCellChanged[int, int, int, int].connect(self.scanSelectionChanged)
         self.scanList.itemSelectionChanged.connect(self.scanSelectionChanged)
+        
 
     def loadScans(self, scans, newFile=True):
-        #self.scans = scans
         self.scanList.setRowCount(len(scans.keys()) )
         row = 0
-        #scanKeys = scans.keys()
         scanKeys = sorted(scans, key=int)
         logger.debug("scanKeys %s" % str(scanKeys))
         for scan in scanKeys:
@@ -71,9 +69,9 @@ class ScanBrowser(qtWidgets.QDialog):
             
     def filterByScanTypes(self, scans, scanTypes):
         filteredScans = {}
-#         scanKeys = scans.keys()
-#         scanKeys.sort(key=int)
         scanKeys = sorted(scans, key=int)
+        if scanTypes is None:
+            raise ValueError("Invalid ScanFilter %s" % scanTypes)
         for scan in scanKeys:
             if len(scanTypes) > 0:
                 thisType = scans[scan].scanCmd.split()[0]
@@ -88,13 +86,9 @@ class ScanBrowser(qtWidgets.QDialog):
         return str(self.scanList.item(self.scanList.currentRow(), 0).text())
         
     def setCurrentScan(self, row):
+        logger.debug("Entered")
         self.scanList.setCurrentCell(row, 0)
 
-#     @qtCore.pyqtSlot(int, int, int, int)
-#     def scanSelectionChanged(self, currentRow, currentColumn, previousRow, previousColumn):
-#         #print("Scan Selection Changed")
-#                     self.scanSelected.emit(str(self.scanList.item(currentRow,0).text()))
-#             
     @qtCore.pyqtSlot()
     def scanSelectionChanged(self):
         logger.debug("Entered")
