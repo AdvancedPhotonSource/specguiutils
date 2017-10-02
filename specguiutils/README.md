@@ -7,3 +7,6 @@ Version 0.0.1
 	
 Version 0.1    10/2/2017
 More work to get this up and running for the first distribution.
+
+Version 0.2   2017-10-02
+  - Change comments saying pyqt4 to pyqt5 	
