@@ -3,19 +3,18 @@
  See LICENSE file.
 '''
 from setuptools import setup
+from setuptools import find_packages
+PACKAGE_NAME = 'specguiutils'
+setup(name=PACKAGE_NAME,
 
-setup(name='specguiutils',
-      version='0.0.1',
+
+      version='0.1',
       description='Library to provide PyQt4 widgets to display spec file information read using ' +
                    'spec2nexus.spec file library',
       author = 'John Hammonds',
       author_email = 'JPHammonds@anl.gov',
       url = '',
-      packages = ['specguiutils',
-                  'specguiutils.scanbrowser',
-                  'specguiutils.counterselector',
-                  'specguiutils.examples',
-                  'specguiutils.examples.scanbrowserexample'] ,
+      packages = find_packages(exclude=["*.test", "*.test.*", "test.*", "test"]),
       install_requires = ['spec2nexus', ],
       license = 'See LICENSE File',
       platforms = 'any',
