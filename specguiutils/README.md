@@ -4,3 +4,6 @@ to pick a particular scan or scans and then display/process information about th
 
 Version 0.0.1 
 	Started 5/12/2017
+	
+Version 0.1    10/2/2017
+More work to get this up and running for the first distribution.
