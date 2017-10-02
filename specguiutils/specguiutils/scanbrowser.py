@@ -33,7 +33,7 @@ class ScanBrowser(qtWidgets.QDialog):
         #
         font = qtGui.QFont("Helvetica", pointSize=10)
         self.scanList.setFont(font)
-        
+        self.scanList.setEditTriggers(qtWidgets.QAbstractItemView.NoEditTriggers)
         self.scanList.setRowCount(1)
         self.scanList.setColumnCount(3)
         self.scanList.setColumnWidth(SCAN_COL, SCAN_COL_WIDTH)
