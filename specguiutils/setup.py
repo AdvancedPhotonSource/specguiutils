@@ -18,6 +18,6 @@ setup(name=PACKAGE_NAME,
       install_requires = ['spec2nexus', ],
       license = 'See LICENSE File',
       platforms = 'any',
-#       scripts = ['Scripts/rsMap3D',
-#                  'Scripts/rsMap3D.bat'],
+      install_requires = ['pyqt5 >= 5.6',
+                          'spec2nexus >= 2017.901.4']
 )
