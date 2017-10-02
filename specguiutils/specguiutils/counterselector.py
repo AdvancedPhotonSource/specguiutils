@@ -27,7 +27,7 @@ class CounterSelector(qtWidgets.QDialog):
         '''
         constructor
         '''
-        super(CounterSelector, self).__init__(parent)
+        super(CounterSelector, self).__init__(parent=parent)
         layout = qtWidgets.QHBoxLayout()
         self.counterModel = CounterSelectorTableModel(parent=self, counterOpts=counterOpts)
         self.counterView = CounterSelectorView(parent, tableModel=self.counterModel)
