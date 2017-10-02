@@ -31,9 +31,7 @@ class ScanBrowser(qtWidgets.QDialog):
         layout = qtWidgets.QHBoxLayout()
         self.scanList = qtWidgets.QTableWidget()
         #
-        font = qtGui.QFont()
-        font.setFamily("Helvetica")
-        font.setPointSize(10)
+        font = qtGui.QFont("Helvetica", pointSize=10)
         self.scanList.setFont(font)
         
         self.scanList.setRowCount(1)
@@ -50,7 +48,6 @@ class ScanBrowser(qtWidgets.QDialog):
         self.show()
         
         self.scanList.itemSelectionChanged.connect(self.scanSelectionChanged)
-        
 
     def loadScans(self, scans, newFile=True):
         self.scanList.setRowCount(len(scans.keys()) )
