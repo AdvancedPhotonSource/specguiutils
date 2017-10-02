@@ -18,3 +18,11 @@ Version 0.4   2017-10-02
   - Remove requirement for pyqt from setup.py.  It is not available through pip.
     If using anaconda, user will need to do conda install.  Still cannot leave 
     this as a requirement.  Not finding it.
+    
+Version 0.5 2017-10-02
+   - Set ScanBrowser Table so that it is not editable
+   
+    
+    
+    
+    
