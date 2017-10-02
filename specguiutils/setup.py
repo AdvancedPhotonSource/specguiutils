@@ -8,7 +8,7 @@ PACKAGE_NAME = 'specguiutils'
 setup(name=PACKAGE_NAME,
 
 
-      version='0.4',
+      version='0.5',
       description='Library to provide PyQt5 widgets to display spec file information read using ' +
                    'spec2nexus.spec file library',
       author = 'John Hammonds',
