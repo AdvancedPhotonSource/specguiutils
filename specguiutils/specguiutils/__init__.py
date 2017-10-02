@@ -39,3 +39,8 @@ else:
     logging.config.dictConfig(LOGGER_DEFAULT)
         
 logger = logging.getLogger(LOGGER_NAME)
+
+
+class XMCDException(Exception):
+    def __init__(self, msg):
+        super(XMCDException, self).__init(msg)
