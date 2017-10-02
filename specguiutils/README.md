@@ -9,4 +9,12 @@ Version 0.1    10/2/2017
 More work to get this up and running for the first distribution.
 
 Version 0.2   2017-10-02
-  - Change comments saying pyqt4 to pyqt5 	
+  - Change comments saying pyqt4 to pyqt5 
+  
+Version 0.3   2017-10-02
+  - Change requirement for pyqt from pyqt5 to pyqt
+  
+Version 0.4   2017-10-02
+  - Remove requirement for pyqt from setup.py.  It is not available through pip.
+    If using anaconda, user will need to do conda install.  Still cannot leave 
+    this as a requirement.  Not finding it.
