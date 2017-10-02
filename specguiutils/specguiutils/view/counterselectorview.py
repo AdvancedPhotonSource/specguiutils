@@ -13,8 +13,8 @@ class CounterSelectorView(qtWidgets.QTableView):
     
     counterDataChanged = qtCore.pyqtSignal(list, name="signalChanged")
     
-    def __init__(self, parent, tableModel = None):
-        super(CounterSelectorView,self).__init__(parent)
+    def __init__(self, parent=None, tableModel = None):
+        super(CounterSelectorView,self).__init__(parent=parent)
         self.setModel(tableModel)
         self.columnGroups = {}
         
