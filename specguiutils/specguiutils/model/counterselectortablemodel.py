@@ -68,17 +68,6 @@ class CounterSelectorTableModel(qtCore.QAbstractTableModel):
                     self.counterData[0].append(BLANK_ROW_VALUE)
         self.insertRow(0)
 
-#     def initializeRowValues(self, row):
-#         '''
-#         Initialize Row data to False
-#         '''
-#         if len(self.counterData) < row+1 :
-#             raise(TypeError("Wrong row Number %d only %d rows" %(row, len(self.counterData)) ))
-#         col = 1
-#         for item in self.counterOpts():
-#             self.counterData[row][col] = False
-#         self.dataChanged.emit(self.index(row,1), self.index(row,len(self.counterOpts)-1))
-#         
         
     def setHeaderData(self, counterOpts=None):
         self.counterOpts = counterOpts
@@ -134,8 +123,6 @@ class CounterSelectorTableModel(qtCore.QAbstractTableModel):
             raise(IndexError("Wrong row Number %d only %d rows" %(row, len(self.counterData)) ))
         self.counterData[row][0] = name
         self.setData(self.index(row, 0), name)
-#         print "setRowName: counterData %s " % self.counterData
-#         print ("setRowName Setting self.counterData[%d][0] %s" % (row, name) )
         self.dataChanged.emit(self.index(row,0), self.index(row,0))
         
     def setItem(self, row, col, value):
