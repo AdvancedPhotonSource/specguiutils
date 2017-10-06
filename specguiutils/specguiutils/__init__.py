@@ -29,7 +29,8 @@ logConfigFile = os.path.join(userDir, LOGGER_NAME + 'Log.config')
 if os.path.exists(logConfigFile):
     print ("logConfigFile " + logConfigFile )
     try:
-        logging.config.fileConfig(logConfigFile, )
+        logging.config.fileConfig(logConfigFile, disable_existing_loggers=False )
+        print("Success Openning logfile")
     except (NoSectionError,TypeError) as ex:
         print ("In Exception to load dictConfig package %s Because of exeption\n  %s" % (LOGGER_NAME, ex))
         logging.config.dictConfig(LOGGER_DEFAULT)

@@ -43,6 +43,7 @@ class ScanBrowser(qtWidgets.QDialog):
         self.scanList.setSelectionBehavior(qtWidgets.QAbstractItemView.SelectRows)
         self.setMinimumWidth(400)
         self.setMaximumWidth(600)
+        self.setMinimumHeight(250)
         layout.addWidget(self.scanList)
         self.setLayout(layout)
         self.show()
