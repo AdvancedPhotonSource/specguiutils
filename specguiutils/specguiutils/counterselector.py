@@ -36,7 +36,8 @@ class CounterSelector(qtWidgets.QDialog):
         font.setFamily("Helvetica")
         font.setPointSize(10)
         self.counterView.setFont(font)
-        
+        self.setMinimumWidth(400)
+        self.setMinimumHeight(250)
         self.counterModel.headerDataChanged.connect(self.counterView.headerChanged)
         layout.addWidget(self.counterView)
         self.setLayout(layout) 
@@ -46,7 +47,7 @@ class CounterSelector(qtWidgets.QDialog):
 
     @qtCore.pyqtSlot(qtWidgets.QTableWidgetItem)
     def flagChangingOpts(self, item):
-        logger.debug( "Entering flagChangingOpts")
+        logger.debug( METHOD_ENTER_STR % item)
         row = item.row()
         col = item.column()
         logger.debug ("row %d, column %d" % (row, col))
@@ -91,7 +92,6 @@ class CounterSelector(qtWidgets.QDialog):
             for column in range(len(selections)):
                 if not (selections[column] == ''):
                     nameIndex = self.counterModel.index( row,0)
-                    #logger.debug("nameIndex: %s" % nameIndex)
                     nameWidget = self.counterModel.data(nameIndex)
                     if str(nameWidget) == selections[column]:
                         foundName[column] = True
