@@ -6,6 +6,7 @@ import PyQt5.QtWidgets as qtWidgets
 import PyQt5.QtCore as qtCore
 import PyQt5.QtGui as qtGui
 import logging
+from specguiutils import METHOD_ENTER_STR
 logger = logging.getLogger(__name__)
 
 SCAN_COL_WIDTH = 40
@@ -51,10 +52,12 @@ class ScanBrowser(qtWidgets.QDialog):
         self.scanList.itemSelectionChanged.connect(self.scanSelectionChanged)
 
     def loadScans(self, scans, newFile=True):
+        logger.debug(METHOD_ENTER_STR)
+        self.scanList.itemSelectionChanged.disconnect(self.scanSelectionChanged)
         self.scanList.setRowCount(len(scans.keys()) )
-        row = 0
         scanKeys = sorted(scans, key=int)
         logger.debug("scanKeys %s" % str(scanKeys))
+        row = 0
         for scan in scanKeys:
             scanItem = qtWidgets.QTableWidgetItem(str(scans[scan].scanNum))
             self.scanList.setItem(row, SCAN_COL, scanItem)
@@ -63,6 +66,7 @@ class ScanBrowser(qtWidgets.QDialog):
             nPointsItem = qtWidgets.QTableWidgetItem(str(len(scans[scan].data_lines)))
             self.scanList.setItem(row, NUM_PTS_COL, nPointsItem)
             row += 1
+        self.scanList.itemSelectionChanged.connect(self.scanSelectionChanged)
         self.scanLoaded.emit(newFile)
             
     def filterByScanTypes(self, scans, scanTypes):
@@ -84,13 +88,14 @@ class ScanBrowser(qtWidgets.QDialog):
         return str(self.scanList.item(self.scanList.currentRow(), 0).text())
         
     def setCurrentScan(self, row):
-        logger.debug("Entered")
+        logger.debug(METHOD_ENTER_STR)
         self.scanList.setCurrentCell(row, 0)
 
     @qtCore.pyqtSlot()
     def scanSelectionChanged(self):
-        logger.debug("Entered")
+        logger.debug(METHOD_ENTER_STR)
         selectedItems = self.scanList.selectedIndexes()
+        logger.debug("SelectedItems %s" % selectedItems)
         selectedScans = []
         for item in selectedItems:
             if item.column() == 0:
