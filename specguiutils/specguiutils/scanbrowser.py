@@ -17,7 +17,7 @@ SCAN_COL = 0
 CMD_COL = 1
 NUM_PTS_COL = 2
 
-class ScanBrowser(qtWidgets.QDialog):
+class ScanBrowser(qtWidgets.QWidget):
     '''
     '''
     # Define some signals that this class will provide to users

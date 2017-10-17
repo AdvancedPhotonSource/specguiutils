@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 COUNTER_LABEL_COLUMN = 0
 COUNTER_HEADER_INIT = ['Counter',]
 
-class CounterSelector(qtWidgets.QDialog):
+class CounterSelector(qtWidgets.QWidget):
     '''
     GUI to display the monitors for a selected scan
     '''
