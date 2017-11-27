@@ -16,6 +16,7 @@ MINIMUM_WIDGET_WIDTH = 420
 SCAN_COL = 0
 CMD_COL = 1
 NUM_PTS_COL = 2
+DEFAULT_COLUMN_NAMES = ['S#', 'Command', 'Points']
 
 class ScanBrowser(qtWidgets.QWidget):
     '''
@@ -30,20 +31,22 @@ class ScanBrowser(qtWidgets.QWidget):
         '''
         super(ScanBrowser, self).__init__(parent)
         layout = qtWidgets.QHBoxLayout()
+        self.positionersToDisplay = []
+        self.lastScans = None
         self.scanList = qtWidgets.QTableWidget()
         #
         font = qtGui.QFont("Helvetica", pointSize=10)
         self.scanList.setFont(font)
         self.scanList.setEditTriggers(qtWidgets.QAbstractItemView.NoEditTriggers)
         self.scanList.setRowCount(1)
-        self.scanList.setColumnCount(3)
+        self.scanList.setColumnCount(len(DEFAULT_COLUMN_NAMES) + len(self.positionersToDisplay))
         self.scanList.setColumnWidth(SCAN_COL, SCAN_COL_WIDTH)
         self.scanList.setColumnWidth(CMD_COL, CMD_COL_WIDTH)
         self.scanList.setColumnWidth(NUM_PTS_COL, NUM_PTS_COL_WIDTH)
         self.scanList.setHorizontalHeaderLabels(['S#', 'Command', 'Points'])
         self.scanList.setSelectionBehavior(qtWidgets.QAbstractItemView.SelectRows)
         self.setMinimumWidth(400)
-        self.setMaximumWidth(600)
+        self.setMaximumWidth(900)
         self.setMinimumHeight(250)
         layout.addWidget(self.scanList)
         self.setLayout(layout)
@@ -53,6 +56,7 @@ class ScanBrowser(qtWidgets.QWidget):
 
     def loadScans(self, scans, newFile=True):
         logger.debug(METHOD_ENTER_STR)
+        self.lastScans = scans
         self.scanList.itemSelectionChanged.disconnect(self.scanSelectionChanged)
         self.scanList.setRowCount(len(scans.keys()) )
         scanKeys = sorted(scans, key=int)
@@ -65,10 +69,25 @@ class ScanBrowser(qtWidgets.QWidget):
             self.scanList.setItem(row, CMD_COL, cmdItem)
             nPointsItem = qtWidgets.QTableWidgetItem(str(len(scans[scan].data_lines)))
             self.scanList.setItem(row, NUM_PTS_COL, nPointsItem)
-            row += 1
+            row +=1
+        self.fillSelectedPositionerData()
         self.scanList.itemSelectionChanged.connect(self.scanSelectionChanged)
         self.scanLoaded.emit(newFile)
             
+    def fillSelectedPositionerData(self):
+        if self.lastScans is None:
+            return
+        scanKeys = sorted(self.lastScans, key=int)
+        row = 0
+        if (not (self.lastScans is None)) and (len(self.positionersToDisplay)) > 0:
+            for scan in scanKeys:
+                posNum = 1
+                for positioner in self.positionersToDisplay:
+                    item = qtWidgets.QTableWidgetItem(str(self.lastScans[scan].positioner[positioner]))
+                    self.scanList.setItem(row, NUM_PTS_COL + posNum, item)
+                    posNum += 1
+                row += 1
+        
     def filterByScanTypes(self, scans, scanTypes):
         filteredScans = {}
         scanKeys = sorted(scans, key=int)
@@ -90,6 +109,12 @@ class ScanBrowser(qtWidgets.QWidget):
     def setCurrentScan(self, row):
         logger.debug(METHOD_ENTER_STR)
         self.scanList.setCurrentCell(row, 0)
+        
+    def setPositionersToDisplay(self, positioners):
+        self.positionersToDisplay = positioners
+        self.scanList.setColumnCount(len(DEFAULT_COLUMN_NAMES) + len(self.positionersToDisplay))
+        self.scanList.setHorizontalHeaderLabels(DEFAULT_COLUMN_NAMES + self.positionersToDisplay)
+        self.fillSelectedPositionerData()
 
     @qtCore.pyqtSlot()
     def scanSelectionChanged(self):
