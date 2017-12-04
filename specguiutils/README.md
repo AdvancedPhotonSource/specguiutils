@@ -22,7 +22,9 @@ Version 0.4   2017-10-02
 Version 0.5 2017-10-02
    - Set ScanBrowser Table so that it is not editable
    
-    
+Version 0.6.3 
+    - Add positioner selector and adding the values of positioners to 
+    the ScanBrowser so that users can see more details about the scans.
     
     
     
