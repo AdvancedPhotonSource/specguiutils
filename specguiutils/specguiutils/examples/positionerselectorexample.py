@@ -12,7 +12,7 @@ import sys
 APP_NAME='PositionerSelectorExample'
 
 class PositionerSelectorExample(BaseExample):
-    
+
     def __init__(self, parent=None):
         super(PositionerSelectorExample, self).__init__(parent)
         self.positionerSelector = PositionerSelector()

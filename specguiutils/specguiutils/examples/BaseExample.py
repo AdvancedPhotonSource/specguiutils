@@ -3,7 +3,6 @@
  See LICENSE file.
 '''
 import PyQt5.QtWidgets as qtWidgets
-import PyQt5.QtCore as qtCore
 import logging
 logger = logging.getLogger(__name__)
 
