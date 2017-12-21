@@ -144,7 +144,7 @@ class CounterSelectorTableModel(qtCore.QAbstractTableModel):
         try:
             self.counterData[row][col] = value
             self.dataChanged.emit(self.index(row,col), self.index(row,col))
-        except IndexError as ie:
+        except IndexError:
             print ("Index Error: trying to set self.counterData[%d][%d]" % (row, col))
             print ("len(self.counterData) %d " % len(self.counterData))
             print ("len(self.counterData[row]) %d " % len(self.counterData[row]))
