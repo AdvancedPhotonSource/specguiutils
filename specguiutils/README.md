@@ -27,4 +27,8 @@ Version 0.6.3
     the ScanBrowser so that users can see more details about the scans.
     
     
-    
+Version 0.6.4
+    - Code cleanup removing unused variables and imports
+    - Remove Empty item when the ScanBrowser is initialized.
+    - Remove the row number from the scan browser.  This is confusing 
+    when combined with the scan number.    
