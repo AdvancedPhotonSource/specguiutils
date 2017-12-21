@@ -6,6 +6,7 @@ import PyQt5.QtWidgets as qtWidgets
 import PyQt5.QtCore as qtCore
 from specguiutils.radiobuttondelegate import RadioButtonDelegate
 import logging
+from specguiutils import METHOD_ENTER_STR
 logger = logging.getLogger(__name__)
 
 
@@ -39,8 +40,7 @@ class CounterSelectorView(qtWidgets.QTableView):
                 
     @qtCore.pyqtSlot(bool)
     def aButtonClicked(self, state):
-        logger.debug("Entering")
-        dataOut = []
+        logger.debug(METHOD_ENTER_STR)
         dataOut = self.getSelectedCounters()
         self.counterDataChanged[list].emit(dataOut)
             
@@ -48,8 +48,6 @@ class CounterSelectorView(qtWidgets.QTableView):
         dataOut = []
         logger.debug (" %s" % dataOut )
         for bGroup in self.columnGroups.keys():
-#             position = qtCore.QModelIndex()
-#             print " row, col %d, %d" % (position.row(), position.column())
             widgetId = self.columnGroups[bGroup].checkedId()
             if widgetId != -1:
                 dataOut.append(-1*widgetId -2)
