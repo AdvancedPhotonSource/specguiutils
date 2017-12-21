@@ -4,13 +4,12 @@
 '''
 import sys
 import unittest
-from PyQt5.QtTest import QSignalSpy, QTest
+from PyQt5.QtTest import QSignalSpy
 from PyQt5.QtWidgets import QApplication
 from specguiutils.scanbrowser import ScanBrowser
 from spec2nexus.spec import SpecDataFile
-import specguiutils
 import os
-from matplotlib.cm import spec
+
 app =  QApplication(sys.argv)
 
 FLUORESCENCE_FILE = "Brian-Nick/Fluorescence/lineup"

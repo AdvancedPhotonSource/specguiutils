@@ -9,7 +9,6 @@ from spec2nexus.spec import SpecDataFile
 from specguiutils.examples.BaseExample import BaseExample
 from specguiutils.scantypeselector import ScanTypeSelector
 import logging
-import os
 logger = logging.getLogger(__name__)
 
 APP_NAME = "ScanTypeSelectorExample"

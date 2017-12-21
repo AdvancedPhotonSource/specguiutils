@@ -9,26 +9,50 @@ from specguiutils import METHOD_ENTER_STR
 logger = logging.getLogger(__name__)
 
 class PositionerSelector(qtWidgets.QWidget):
+    '''
+    This class presents two lists.  Initially one list is populated with 
+    the positioners available as provided by the #P lines in the spec
+    file.  The user can Add or remove these parameters from the 
+    available list to the selected list.  The user can then grab the 
+    selected list for use in code.  One use is to pass this list to the
+    :py:class:ScanBrowser and these parameters will be added as columns
+    in the browser's table of scan information.
+    '''
     
     def __init__(self, parent=None):
+        '''
+        Create widget with two selection lists.  Positioners will be 
+        selected from an available list and can move these to selected 
+        list using one of two buttons.  Likewise, items in the selected 
+        list can be highlighted and moved back to the available list 
+        using the other button.
+        '''
         super(PositionerSelector, self).__init__(parent)
         layout = qtWidgets.QHBoxLayout()
+        originalLayout = qtWidgets.QVBoxLayout()
+        originalLabel = qtWidgets.QLabel("Available Positioners")
         self.originalList = qtWidgets.QListWidget()
         self.originalList.setMinimumWidth(300)
         self.originalList.setMinimumHeight(400)
+        originalLayout.addWidget(originalLabel)
+        originalLayout.addWidget(self.originalList)
+        selectedLayout = qtWidgets.QVBoxLayout()
+        selectedLabel = qtWidgets.QLabel("Available Positioners")
         self.selectedList = qtWidgets.QListWidget()
         self.selectedList.setMinimumWidth(300)
         self.selectedList.setMinimumHeight(400)
+        selectedLayout.addWidget(selectedLabel)
+        selectedLayout.addWidget(self.selectedList)
         self.addToSelection = qtWidgets.QPushButton("Add to Selection")
         self.removeFromSelection = qtWidgets.QPushButton("RemoveFromSelection")
-        layout.addWidget(self.originalList)
+        layout.addLayout(originalLayout)
         buttonLayout = qtWidgets.QVBoxLayout()
 #        buttonLayout.addWidget(qtWidgets.QSpacerItem(100, 30))
         buttonLayout.addWidget(self.addToSelection)
         buttonLayout.addWidget(self.removeFromSelection)
 #        buttonLayout.addWidget(qtWidgets.QSpacerItem(100, 30))
         layout.addLayout(buttonLayout)
-        layout.addWidget(self.selectedList)
+        layout.addLayout(selectedLayout)
         self.setLayout(layout)
         self.show()
         self.addToSelection.clicked.connect(self._addItemToSelection)
@@ -38,6 +62,9 @@ class PositionerSelector(qtWidgets.QWidget):
         
     @qtCore.pyqtSlot()
     def _addItemToSelection(self):
+        '''
+        Handler to move information from the available to selected list
+        '''
         logger.debug(METHOD_ENTER_STR % self.originalList.currentItem())
         selectedItem = self.originalList.currentItem()
         if not (selectedItem is None):

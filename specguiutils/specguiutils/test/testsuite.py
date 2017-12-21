@@ -6,7 +6,6 @@ Created on Aug 21, 2017
 import unittest
 from specguiutils.test.testScanBrowser import TestScanBrowserTest
 from specguiutils.test.testCounterSelectorModel import CounterSelectorTableModelTest
-from specguiutils.test import testCounterSelectorView
 
 
 def suite():

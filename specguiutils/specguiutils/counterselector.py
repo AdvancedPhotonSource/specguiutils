@@ -2,15 +2,13 @@
  Copyright (c) 2017, UChicago Argonne, LLC
  See LICENSE file.
 '''
-import os
 import PyQt5.QtGui as qtGui
 import PyQt5.QtWidgets as qtWidgets
 import PyQt5.QtCore as qtCore
-from PyQt5.QtWidgets import QButtonGroup
 from specguiutils.model.counterselectortablemodel import CounterSelectorTableModel
-from specguiutils.radiobuttondelegate import RadioButtonDelegate
 from specguiutils.view.counterselectorview import CounterSelectorView
 import logging
+from specguiutils import METHOD_ENTER_STR
 logger = logging.getLogger(__name__)
 
 COUNTER_LABEL_COLUMN = 0
@@ -18,7 +16,10 @@ COUNTER_HEADER_INIT = ['Counter',]
 
 class CounterSelector(qtWidgets.QWidget):
     '''
-    GUI to display the monitors for a selected scan
+    GUI to display the monitors/counters (from #L)  for a selected scan.  
+    A number of columns are displayed along with the scan parameters.  
+    Each column will represent a fairly large radiobox selection with 
+    one radio button for each counter 
     '''
     # signal params (counterName, col, newVal)
     counterOptChanged = qtCore.pyqtSignal(str, int, bool, name='counterOptChanged')
@@ -65,11 +66,17 @@ class CounterSelector(qtWidgets.QWidget):
         logger.debug("Exiting ")
 
     def getSelectedCounters(self):
+        '''
+        Rerturn a list of the selected counters
+        '''
         counters = self.counterView.getSelectedCounters()
         logger.debug ("counters %s" %counters) 
         return counters
 
     def getSelectedCounterNames(self, counters):
+        '''
+        return a list of the selected counter names
+        '''
         counterNames = []
         logger.debug ("counters %s" % counters)
         for counter in range(len(counters)):
@@ -80,9 +87,15 @@ class CounterSelector(qtWidgets.QWidget):
         return counterNames
         
     def setCurrentCounter(self, row):
+        '''
+        Set the current selected counter for a given row
+        '''
         self.counterView.setCurrentIndex(self.counterModel.index(row,0))
         
     def setSelectedCounters(self, selections):
+        '''
+        Set the value for all of the counters
+        '''
         logger.debug("Entering data size %d, %d" % (self.counterModel.rowCount(), self.counterModel.columnCount()))
         logger.debug("trying to set selections %s " % selections)
         foundName = {}
