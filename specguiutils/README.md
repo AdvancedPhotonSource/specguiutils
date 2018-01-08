@@ -33,6 +33,6 @@ Version 0.6.4
     - Remove the row number from the scan browser.  This is confusing 
     when combined with the scan number.
     
-Version 0.6.4
+Version 0.6.5  2018-01-08
     - Add code to PositionSelector and ScanBrowser to allow selecting 
     user parameters and showing them in the scanBrowser
