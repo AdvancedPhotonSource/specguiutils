@@ -31,4 +31,8 @@ Version 0.6.4
     - Code cleanup removing unused variables and imports
     - Remove Empty item when the ScanBrowser is initialized.
     - Remove the row number from the scan browser.  This is confusing 
-    when combined with the scan number.    
+    when combined with the scan number.
+    
+Version 0.6.4
+    - Add code to PositionSelector and ScanBrowser to allow selecting 
+    user parameters and showing them in the scanBrowser
