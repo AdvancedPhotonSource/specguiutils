@@ -47,6 +47,7 @@ class ScanBrowser(qtWidgets.QWidget):
         super(ScanBrowser, self).__init__(parent)
         layout = qtWidgets.QHBoxLayout()
         self.positionersToDisplay = []
+        self.userParamsToDisplay = []
         self.lastScans = None
         self.scanList = qtWidgets.QTableWidget()
         #
@@ -95,6 +96,7 @@ class ScanBrowser(qtWidgets.QWidget):
             self.scanList.setItem(row, NUM_PTS_COL, nPointsItem)
             row +=1
         self.fillSelectedPositionerData()
+        self.fillSelectedUserParamsData()
         self.scanList.itemSelectionChanged.connect(self.scanSelectionChanged)
         self.scanLoaded.emit(newFile)
             
@@ -114,6 +116,35 @@ class ScanBrowser(qtWidgets.QWidget):
                 for positioner in self.positionersToDisplay:
                     item = qtWidgets.QTableWidgetItem(str(self.lastScans[scan].positioner[positioner]))
                     self.scanList.setItem(row, NUM_PTS_COL + posNum, item)
+                    posNum += 1
+                row += 1
+        
+    def fillSelectedUserParamsData(self):
+        '''
+        If user parameters have been selected to supplement the table, 
+        then this cause will grab the values out for each scan and 
+        places it in a column of the table
+        '''
+        if self.lastScans is None:
+            return
+        scanKeys = sorted(self.lastScans, key=int)
+        row = 0
+        if (not (self.lastScans is None)) and (len(self.userParamsToDisplay)) > 0:
+            for scan in scanKeys:
+                posNum = 1
+                for userParam in self.userParamsToDisplay:
+                    try:
+                        item = qtWidgets.QTableWidgetItem(str(self.lastScans[scan].U[userParam]))
+                        self.scanList.setItem(row, \
+                                              NUM_PTS_COL + posNum \
+                                              + len(self.positionersToDisplay), \
+                                              item)
+                    except KeyError as ke:
+                        item = qtWidgets.QTableWidgetItem(str("N/A"))
+                        self.scanList.setItem(row, \
+                                              NUM_PTS_COL + posNum \
+                                              + len(self.positionersToDisplay), \
+                                              item)
                     posNum += 1
                 row += 1
         
@@ -156,11 +187,29 @@ class ScanBrowser(qtWidgets.QWidget):
         '''
         self.positionersToDisplay = positioners
         self.scanList.setColumnCount(len(DEFAULT_COLUMN_NAMES) + \
-                                     len(self.positionersToDisplay))
+                                     len(self.positionersToDisplay) + \
+                                     len(self.userParamsToDisplay))
         self.scanList.setHorizontalHeaderLabels(DEFAULT_COLUMN_NAMES + \
-                                            self.positionersToDisplay)
+                                            self.positionersToDisplay + \
+                                            self.userParamsToDisplay)
         self.fillSelectedPositionerData()
-
+        self.fillSelectedUserParamsData()
+        
+    def setUserParamsToDisplay(self, userParams):
+        '''
+        Sets a list of positiorers that will be added to the table 
+        whenever new data is loaded 
+        '''
+        self.userParamsToDisplay = userParams
+        self.scanList.setColumnCount(len(DEFAULT_COLUMN_NAMES) + \
+                                     len(self.positionersToDisplay) + \
+                                     len(self.userParamsToDisplay))
+        self.scanList.setHorizontalHeaderLabels(DEFAULT_COLUMN_NAMES + \
+                                            self.positionersToDisplay +
+                                            self.userParamsToDisplay)
+        self.fillSelectedPositionerData()
+        self.fillSelectedUserParamsData()
+        
     @qtCore.pyqtSlot()
     def scanSelectionChanged(self):
         '''

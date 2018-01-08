@@ -123,6 +123,46 @@ class PositionerSelector(qtWidgets.QWidget):
         positionSelector.exec()
         return positionSelector.getSelectedPositioners()
 
+    @staticmethod
+    def getUserParamsOSelectorModalDialog(userParams):
+        class PositionerSelectDialog(qtWidgets.QDialog):
+            def __init__(self, parent, userParams):
+                super(PositionerSelectDialog,self).__init__(parent)
+                self.selectedUserParameters = []
+                self.setModal(True)
+                layout = qtWidgets.QVBoxLayout()
+                self.userParamsSelector = PositionerSelector()
+                self.userParamsSelector.loadPositioners(userParams)
+                buttonLayout = qtWidgets.QHBoxLayout()
+                self.okButton = qtWidgets.QPushButton("OK")
+                self.cancelButton = qtWidgets.QPushButton("Cancel")
+                buttonLayout.addWidget(self.okButton)
+                buttonLayout.addWidget(self.cancelButton)
+                layout.addWidget(self.userParamsSelector)
+                layout.addLayout(buttonLayout)
+                self.okButton.clicked.connect(self.okPressed)
+                self.cancelButton.clicked.connect(self.cancelPressed)
+                self.setLayout(layout)
+                self.setGeometry(300, 200, 460, 350)
+                self.show()
+                
+            def cancelPressed(self):
+                self.hide()
+                self.deleteLater()
+                
+            def okPressed(self):
+                self.selecteduserParameters = \
+                    self.userParamsSelector.getSelectedItems()
+                self.hide()
+                self.deleteLater()
+                
+            def getSelectedPositioners(self):
+                return self.selecteduserParameters
+            
+        positionSelector = PositionerSelectDialog(None, userParams)
+        positionSelector.exec()
+        return positionSelector.getSelectedPositioners()
+
     def _originalListDoubleClicked(self, items):
         self._addItemToSelection()
         
