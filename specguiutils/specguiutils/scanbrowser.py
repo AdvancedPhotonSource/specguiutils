@@ -139,7 +139,7 @@ class ScanBrowser(qtWidgets.QWidget):
                                               NUM_PTS_COL + posNum \
                                               + len(self.positionersToDisplay), \
                                               item)
-                    except KeyError as ke:
+                    except KeyError:
                         item = qtWidgets.QTableWidgetItem(str("N/A"))
                         self.scanList.setItem(row, \
                                               NUM_PTS_COL + posNum \
