@@ -5,8 +5,11 @@
 import PyQt5.QtWidgets as qtWidgets
 import PyQt5.QtCore as qtCore
 import PyQt5.QtGui as qtGui
+import PyQt5.Qt as qt
 import logging
 from specguiutils import METHOD_ENTER_STR
+from PyQt5.Qt import QApplication
+from PyQt5.QtGui import QGuiApplication
 logger = logging.getLogger(__name__)
 
 SCAN_COL_WIDTH = 40
@@ -71,7 +74,7 @@ class ScanBrowser(qtWidgets.QWidget):
         self.show()
         
         self.scanList.itemSelectionChanged.connect(self.scanSelectionChanged)
-
+        
     def loadScans(self, scans, newFile=True):
         '''
         loads the list of scans into the browser. At the end, it will 
@@ -99,6 +102,7 @@ class ScanBrowser(qtWidgets.QWidget):
         self.fillSelectedPositionerData()
         self.fillSelectedUserParamsData()
         self.scanList.itemSelectionChanged.connect(self.scanSelectionChanged)
+        
         self.scanLoaded.emit(newFile)
             
     def fillSelectedPositionerData(self):
@@ -201,10 +205,10 @@ class ScanBrowser(qtWidgets.QWidget):
 
     def getCurrentScan(self):
         '''
-        retifmx the currently selected scan
+        return the currently selected scan
         '''
         return str(self.scanList.item(self.scanList.currentRow(), 0).text())
-        
+                
     def setCurrentScan(self, row):
         '''
         Sets the current scan selection
@@ -214,7 +218,7 @@ class ScanBrowser(qtWidgets.QWidget):
         
     def setPositionersToDisplay(self, positioners):
         '''
-        Sets a list of positiorers that will be added to the table 
+        Sets a list of positioners that will be added to the table 
         whenever new data is loaded 
         '''
         self.positionersToDisplay = positioners
@@ -265,7 +269,18 @@ class ScanBrowser(qtWidgets.QWidget):
         self.fillSelectedPositionerData()
         self.fillSelectedUserParamsData()
         self.fillSelectedTemperatureParamsData()
-        
+
+    def setToolTipOnCells(self, tip):
+        '''
+        Add the same tooltip to all cells.  This can be used to issue 
+        warnings to user such as a need to select one type of data to 
+        enable further processing.
+        '''
+        logger.debug(METHOD_ENTER_STR % tip)
+        for col in range(self.scanList.columnCount()):
+            self.scanList.horizontalHeaderItem(col).setToolTip(tip)
+            for row in range(self.scanList.rowCount()):
+                self.scanList.item(row,col).setToolTip(tip)
     @qtCore.pyqtSlot()
     def scanSelectionChanged(self):
         '''
