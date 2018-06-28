@@ -274,13 +274,18 @@ class ScanBrowser(qtWidgets.QWidget):
         '''
         Add the same tooltip to all cells.  This can be used to issue 
         warnings to user such as a need to select one type of data to 
-        enable further processing.
+        enable further processing.  Having a bit of trouble with the 
+        toolTip actually updating.
         '''
         logger.debug(METHOD_ENTER_STR % tip)
         for col in range(self.scanList.columnCount()):
             self.scanList.horizontalHeaderItem(col).setToolTip(tip)
+            self.scanList.horizontalHeaderItem(col).toolTip()
             for row in range(self.scanList.rowCount()):
                 self.scanList.item(row,col).setToolTip(tip)
+                self.scanList.item(row,col).toolTip()
+        self.scanList.update()
+                
     @qtCore.pyqtSlot()
     def scanSelectionChanged(self):
         '''
