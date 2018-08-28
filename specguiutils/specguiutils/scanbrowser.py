@@ -5,8 +5,11 @@
 import PyQt5.QtWidgets as qtWidgets
 import PyQt5.QtCore as qtCore
 import PyQt5.QtGui as qtGui
+import PyQt5.Qt as qt
 import logging
 from specguiutils import METHOD_ENTER_STR
+from PyQt5.Qt import QApplication
+from PyQt5.QtGui import QGuiApplication
 logger = logging.getLogger(__name__)
 
 SCAN_COL_WIDTH = 40
@@ -48,6 +51,7 @@ class ScanBrowser(qtWidgets.QWidget):
         layout = qtWidgets.QHBoxLayout()
         self.positionersToDisplay = []
         self.userParamsToDisplay = []
+        self.temperatureParamsToDisplay = []
         self.lastScans = None
         self.scanList = qtWidgets.QTableWidget()
         #
@@ -70,7 +74,7 @@ class ScanBrowser(qtWidgets.QWidget):
         self.show()
         
         self.scanList.itemSelectionChanged.connect(self.scanSelectionChanged)
-
+        
     def loadScans(self, scans, newFile=True):
         '''
         loads the list of scans into the browser. At the end, it will 
@@ -98,6 +102,7 @@ class ScanBrowser(qtWidgets.QWidget):
         self.fillSelectedPositionerData()
         self.fillSelectedUserParamsData()
         self.scanList.itemSelectionChanged.connect(self.scanSelectionChanged)
+        
         self.scanLoaded.emit(newFile)
             
     def fillSelectedPositionerData(self):
@@ -148,6 +153,37 @@ class ScanBrowser(qtWidgets.QWidget):
                     posNum += 1
                 row += 1
         
+    def fillSelectedTemperatureParamsData(self):
+        '''
+        If user parameters have been selected to supplement the table, 
+        then this cause will grab the values out for each scan and 
+        places it in a column of the table
+        '''
+        if self.lastScans is None:
+            return
+        scanKeys = sorted(self.lastScans, key=int)
+        row = 0
+        if (not (self.lastScans is None)) and (len(self.temperatureParamsToDisplay)) > 0:
+            for scan in scanKeys:
+                posNum = 1
+                for userParam in self.temperatureParamsToDisplay:
+                    try:
+                        item = qtWidgets.QTableWidgetItem(str(self.lastScans[scan].X[userParam]))
+                        self.scanList.setItem(row, \
+                                              NUM_PTS_COL + posNum \
+                                              + len(self.positionersToDisplay) \
+                                              + len(self.userParamsToDisplay),
+                                              item)
+                    except KeyError:
+                        item = qtWidgets.QTableWidgetItem(str("N/A"))
+                        self.scanList.setItem(row, \
+                                              NUM_PTS_COL + posNum \
+                                              + len(self.positionersToDisplay) \
+                                              + len(self.userParamsToDisplay), \
+                                              item)
+                    posNum += 1
+                row += 1
+        
     def filterByScanTypes(self, scans, scanTypes):
         '''
         selects scans fron the list that have a given scan Type and 
@@ -169,10 +205,10 @@ class ScanBrowser(qtWidgets.QWidget):
 
     def getCurrentScan(self):
         '''
-        retifmx the currently selected scan
+        return the currently selected scan
         '''
         return str(self.scanList.item(self.scanList.currentRow(), 0).text())
-        
+                
     def setCurrentScan(self, row):
         '''
         Sets the current scan selection
@@ -182,18 +218,21 @@ class ScanBrowser(qtWidgets.QWidget):
         
     def setPositionersToDisplay(self, positioners):
         '''
-        Sets a list of positiorers that will be added to the table 
+        Sets a list of positioners that will be added to the table 
         whenever new data is loaded 
         '''
         self.positionersToDisplay = positioners
         self.scanList.setColumnCount(len(DEFAULT_COLUMN_NAMES) + \
                                      len(self.positionersToDisplay) + \
-                                     len(self.userParamsToDisplay))
+                                     len(self.userParamsToDisplay) + \
+                                     len(self.temperatureParamsToDisplay))
         self.scanList.setHorizontalHeaderLabels(DEFAULT_COLUMN_NAMES + \
                                             self.positionersToDisplay + \
-                                            self.userParamsToDisplay)
+                                            self.userParamsToDisplay + \
+                                            self.temperatureParamsToDisplay)
         self.fillSelectedPositionerData()
         self.fillSelectedUserParamsData()
+        self.fillSelectedTemperatureParamsData()
         
     def setUserParamsToDisplay(self, userParams):
         '''
@@ -203,13 +242,50 @@ class ScanBrowser(qtWidgets.QWidget):
         self.userParamsToDisplay = userParams
         self.scanList.setColumnCount(len(DEFAULT_COLUMN_NAMES) + \
                                      len(self.positionersToDisplay) + \
-                                     len(self.userParamsToDisplay))
+                                     len(self.userParamsToDisplay) + \
+                                     len(self.temperatureParamsToDisplay))
         self.scanList.setHorizontalHeaderLabels(DEFAULT_COLUMN_NAMES + \
                                             self.positionersToDisplay +
-                                            self.userParamsToDisplay)
+                                            self.userParamsToDisplay+ \
+                                            self.temperatureParamsToDisplay)
         self.fillSelectedPositionerData()
         self.fillSelectedUserParamsData()
+        self.fillSelectedTemperatureParamsData()
         
+    def setTemperatureParamsToDisplay(self, temperatureParams):
+        '''
+        Sets a list of positiorers that will be added to the table 
+        whenever new data is loaded 
+        '''
+        self.temperatureParamsToDisplay = temperatureParams
+        self.scanList.setColumnCount(len(DEFAULT_COLUMN_NAMES) + \
+                                     len(self.positionersToDisplay) + \
+                                     len(self.userParamsToDisplay) + \
+                                     len(self.temperatureParamsToDisplay))
+        self.scanList.setHorizontalHeaderLabels(DEFAULT_COLUMN_NAMES + \
+                                            self.positionersToDisplay +
+                                            self.userParamsToDisplay+ \
+                                            self.temperatureParamsToDisplay)
+        self.fillSelectedPositionerData()
+        self.fillSelectedUserParamsData()
+        self.fillSelectedTemperatureParamsData()
+
+    def setToolTipOnCells(self, tip):
+        '''
+        Add the same tooltip to all cells.  This can be used to issue 
+        warnings to user such as a need to select one type of data to 
+        enable further processing.  Having a bit of trouble with the 
+        toolTip actually updating.
+        '''
+        logger.debug(METHOD_ENTER_STR % tip)
+        for col in range(self.scanList.columnCount()):
+            self.scanList.horizontalHeaderItem(col).setToolTip(tip)
+            self.scanList.horizontalHeaderItem(col).toolTip()
+            for row in range(self.scanList.rowCount()):
+                self.scanList.item(row,col).setToolTip(tip)
+                self.scanList.item(row,col).toolTip()
+        self.scanList.update()
+                
     @qtCore.pyqtSlot()
     def scanSelectionChanged(self):
         '''

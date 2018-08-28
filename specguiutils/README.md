@@ -40,3 +40,7 @@ Version 0.6.5  2018-01-08
 Version 0.7 2018-01-14
     - combine all the 0.6.x to make final 0.7 rev.
     - Also removed a catch of the error in a place that it is not used.
+    
+Version 0.7.1 2018-08-28
+    - Add ability to show tool-tip on cells so that you can show that data 
+    needs some updating or something is missing
